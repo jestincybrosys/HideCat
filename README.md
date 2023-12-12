@@ -1,7 +1,7 @@
 === HideCat: Hide out of stock products by category ===
 
 Contributors: Jestin Joseph
-Donate link: https://jestinjoseph.netlify.app/
+Author URI: https://jestinjoseph.netlify.app/
 Tags: ecommerce, woocommerce, category, hide, out of stock
 Requires at least: 4.7
 Tested up to: 6.1.1

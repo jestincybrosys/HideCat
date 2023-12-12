@@ -3,6 +3,7 @@
 Plugin Name: HideCat: Hide out of stock products by category
 Description: Filter WooCommerce products by multiple categories and hide individual category out-of-stock products for selected categories.
 Version: 1.0.0
+Plugin URI:        https://wordpress.org/plugins/hidecat-hide-out-of-stock-products-by-category
 Author: Jestin Joseph
 Author URI: https://jestinjoseph.netlify.app/
 */
