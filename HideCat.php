@@ -253,9 +253,7 @@ function wchidecate_enqueue_admin_styles() {
     if (isset($_GET['page']) && ($_GET['page'] === 'category-settings' || $_GET['page'] === 'category-sidebar-settings')) {
         wp_enqueue_style('wp-admin');
     }
-    wp_enqueue_script('chosen', 'https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js', array('jquery'), '1.8.7', true);
     wp_enqueue_script('filter', plugin_dir_url(__FILE__) . 'filter.js', array('jquery'), '1.0', true);
-    wp_enqueue_style('chosen-css', 'https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.min.css', array(), '1.8.7');
     wp_enqueue_style('filter-css', plugin_dir_url(__FILE__) . 'css/filter.css');
 }
 add_action('admin_enqueue_scripts', 'wchidecate_enqueue_admin_styles');
