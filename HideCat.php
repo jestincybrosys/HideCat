@@ -8,6 +8,8 @@ Author: Jestin Joseph
 Author URI: https://jestinjoseph.netlify.app/
 */
 // Check WooCommerce installed, activated, and compatible version
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
+
 function wchidecate_version_check($version = '3.0') {
     if (!class_exists('WooCommerce')) {
         echo '<div class="error notice">';
