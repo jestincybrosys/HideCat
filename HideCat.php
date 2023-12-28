@@ -102,7 +102,7 @@ function wchidecate_hide_outofstock_products($q) {
 }
 add_action('pre_get_posts', 'wchidecate_hide_outofstock_products');
 
-// Add to new term page
+// Add to new term page`    
 function wchidecate_added_hide_in_cat($taxonomy) {
     $hide_all_setting = get_option('woocommerce_hide_out_of_stock_items', true);
     $checkbox_output = '<input type="checkbox" id="hide_products_in_cat" name="hide_products_in_cat" value="yes" />';
@@ -138,11 +138,11 @@ function wchidecate_edited_hide_in_cat($term, $taxonomy) {
             <?php echo esc_attr($checkbox_output); ?><p>You can also go to category settings to change this option</p>
         </td>
     </tr>
-    <?php
+    <?php 
 }
 add_action('product_cat_edit_form_fields', 'wchidecate_edited_hide_in_cat', 99, 2);
 
-// Save category settings
+// Save category settings 
 function wchidecate_save_hide_in_cat($term_id, $tag_id) {
     $setting = sanitize_key($_POST['hide_products_in_cat']);
     if (!empty($setting)) {
@@ -154,7 +154,7 @@ function wchidecate_save_hide_in_cat($term_id, $tag_id) {
 add_action('created_product_cat', 'wchidecate_save_hide_in_cat', 10, 2);
 add_action('edited_product_cat', 'wchidecate_save_hide_in_cat', 10, 2);
 
-// Add a custom menu in the WordPress admin sidebar
+// Add a custom menu in the WordPress admin sidebar 
 function wchidecate_category_menu() {
     add_menu_page(
         'Category Settings',
@@ -173,9 +173,9 @@ function wchidecate_category_settings_page() {
         // Handle form submission
         $category_settings = isset($_POST['category_settings']) ? $_POST['category_settings'] : array();
         // Get all product categories
-        $product_categories = get_terms('product_cat', array('hide_empty' => false));
+        $product_categories = get_terms('product_cat', array('hide_empty' => false)); 
         // Loop through all categories and update settings
-        foreach ($product_categories as $category) {
+        foreach ($product_categories as $category) { 
             $category_id = $category->term_id;
             $setting = in_array($category_id, $category_settings) ? 'yes' : 'no';
             update_term_meta($category_id, 'hide_products_in_cat', $setting);
@@ -185,7 +185,7 @@ function wchidecate_category_settings_page() {
     // Display the settings form
     ?>
     <div class="wrap">
-        <h2>Category Settings</h2>
+        <h2>Category Settings</h2> 
         <p>This plugin allows you to hide individual category product when it is out of stock.</p>
         <form method="post">
             <h3>Custom Category Settings</h3>
