@@ -112,7 +112,7 @@ function wchidecate_added_hide_in_cat($taxonomy) {
     ?>
     <div class="form-field term-group">
         <label for="hide_products_in_cat">
-            Hide products when out of stock <?php echo $checkbox_output; ?>
+            Hide products when out of stock <?php echo esc_attr($checkbox_output); ?>
         </label>
     </div>
     <?php
@@ -135,7 +135,7 @@ function wchidecate_edited_hide_in_cat($term, $taxonomy) {
             <label for="hide_products_in_cat">Hide products when out of stock</label>
         </th>
         <td>
-            <?php echo $checkbox_output; ?><p>You can also go to category settings to change this option</p>
+            <?php echo esc_attr($checkbox_output); ?><p>You can also go to category settings to change this option</p>
         </td>
     </tr>
     <?php
@@ -199,7 +199,7 @@ function wchidecate_category_settings_page() {
                     $hide_products_in_cat = get_term_meta($category->term_id, 'hide_products_in_cat', true);
                     $selected = $hide_products_in_cat === 'yes' ? 'selected' : '';
 
-                    echo '<option value="' . $category->term_id . '" ' . $selected . '>' . esc_html($category->name) . '</option>';
+                    echo '<option value="' . esc_attr($category->term_id) . '" ' . esc_attr($selected) . '>' . esc_html($category->name) . '</option>';
                 }
                 ?>
             </select>
