@@ -144,13 +144,18 @@ add_action('product_cat_edit_form_fields', 'wchidecate_edited_hide_in_cat', 99, 
 
 // Save category settings 
 function wchidecate_save_hide_in_cat($term_id, $tag_id) {
-    $setting = sanitize_key($_POST['hide_products_in_cat']);
-    if (!empty($setting)) {
-        update_term_meta($term_id, 'hide_products_in_cat', 'yes');
-    } else {
-        delete_term_meta($term_id, 'hide_products_in_cat');
+    if (isset($_POST['hide_products_in_cat'])) {
+        // Sanitize the input
+        $setting = sanitize_key($_POST['hide_products_in_cat']);
+
+        if (!empty($setting)) {
+            update_term_meta($term_id, 'hide_products_in_cat', 'yes');
+        } else {
+            delete_term_meta($term_id, 'hide_products_in_cat');
+        }
     }
 }
+
 add_action('created_product_cat', 'wchidecate_save_hide_in_cat', 10, 2);
 add_action('edited_product_cat', 'wchidecate_save_hide_in_cat', 10, 2);
 
@@ -170,9 +175,7 @@ add_action('admin_menu', 'wchidecate_category_menu');
 
 function wchidecate_category_settings_page() {
     if (isset($_POST['category_settings'])) {
-        // Handle form submission
         $category_settings = isset($_POST['category_settings']) ? $_POST['category_settings'] : array();
-        // Get all product categories
         $product_categories = get_terms('product_cat', array('hide_empty' => false)); 
         // Loop through all categories and update settings
         foreach ($product_categories as $category) { 
@@ -180,8 +183,10 @@ function wchidecate_category_settings_page() {
             $setting = in_array($category_id, $category_settings) ? 'yes' : 'no';
             update_term_meta($category_id, 'hide_products_in_cat', $setting);
         }
+    
         echo '<div class="updated"><p>Category settings saved.</p></div>';
     }
+    
     // Display the settings form
     ?>
     <div class="wrap">
@@ -215,27 +220,32 @@ add_action('admin_post_save_category_settings', 'wchidecate_category_settings_pa
 
 // Save category settings
 function wchidecate_save_category_settings() {
-    if (isset($_POST['category_settings']) && is_array($_POST['category_settings'])) {
-        foreach ($_POST['category_settings'] as $category_id => $setting) {
-            $setting = sanitize_key($setting);
-            if (!empty($setting)) {
-                update_term_meta($category_id, 'hide_products_in_cat', 'yes');
-            } else {
-                delete_term_meta($category_id, 'hide_products_in_cat');
+    if (isset($_POST['category_settings_nonce']) && wp_verify_nonce($_POST['category_settings_nonce'], 'category_settings_action')) {
+        if (isset($_POST['category_settings']) && is_array($_POST['category_settings'])) {
+            foreach ($_POST['category_settings'] as $category_id => $setting) {
+                $setting = sanitize_key($setting);
+                if (!empty($setting)) {
+                    update_term_meta($category_id, 'hide_products_in_cat', 'yes');
+                } else {
+                    delete_term_meta($category_id, 'hide_products_in_cat');
+                }
             }
         }
     }
 }
 
+
 // Save category settings for the custom sidebar menu
 function wchidecate_save_category_settings_sidebar() {
-    if (isset($_POST['category_settings_sidebar']) && is_array($_POST['category_settings_sidebar'])) {
-        foreach ($_POST['category_settings_sidebar'] as $category_id => $setting) {
-            $setting = sanitize_key($setting);
-            if (!empty($setting)) {
-                update_term_meta($category_id, 'hide_products_in_cat', 'yes');
-            } else {
-                delete_term_meta($category_id, 'hide_products_in_cat');
+    if (isset($_POST['category_settings_sidebar_nonce']) && wp_verify_nonce($_POST['category_settings_sidebar_nonce'], 'category_settings_sidebar_action')) {
+        if (isset($_POST['category_settings_sidebar']) && is_array($_POST['category_settings_sidebar'])) {
+            foreach ($_POST['category_settings_sidebar'] as $category_id => $setting) {
+                $setting = sanitize_key($setting);
+                if (!empty($setting)) {
+                    update_term_meta($category_id, 'hide_products_in_cat', 'yes');
+                } else {
+                    delete_term_meta($category_id, 'hide_products_in_cat');
+                }
             }
         }
     }
@@ -244,11 +254,19 @@ add_action('admin_post_save_category_settings_sidebar', 'wchidecate_save_categor
 
 // Hook into the admin action to handle the form submission
 add_action('admin_init', function () {
-    if (isset($_POST['_wpnonce']) && isset($_POST['action']) && ($_POST['action'] === 'save_category_settings' || $_POST['action'] === 'save_category_settings_sidebar')) {
-        wchidecate_save_category_settings();
-        wchidecate_save_category_settings_sidebar();
+    $valid_nonce = isset($_POST['_wpnonce']) && wp_verify_nonce($_POST['_wpnonce'], 'your_nonce_action');
+
+    $is_category_settings_action = isset($_POST['action']) && ($_POST['action'] === 'save_category_settings' || $_POST['action'] === 'save_category_settings_sidebar');
+
+    if ($valid_nonce && $is_category_settings_action) {
+        if ($_POST['action'] === 'save_category_settings') {
+            wchidecate_save_category_settings();
+        } elseif ($_POST['action'] === 'save_category_settings_sidebar') {
+            wchidecate_save_category_settings_sidebar();
+        }
     }
 });
+
 
 // Enqueue styles for the custom admin page
 function wchidecate_enqueue_admin_styles() {
