@@ -113,7 +113,7 @@ function wchidecate_added_hide_in_cat($taxonomy) {
     <div class="form-field term-group">
         <label for="hide_products_in_cat">
             Hide products when out of stock <?php echo esc_attr($checkbox_output); ?>
-        </label>
+        </label>  
     </div>
     <?php
 }
